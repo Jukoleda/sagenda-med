@@ -8,6 +8,9 @@ router.post('/insertar_contacto', async (req, res, next) => {
     res.redirect('/listar_contactos');
 });
 
-
+router.get('/listar_contactos', async (req, res, next) => {
+    const contactos = await Contactos.find();
+    res.render('mostrar_contactos', {contactos});
+});
 
 module.exports = router;
