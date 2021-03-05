@@ -29,6 +29,15 @@ router.post('/validar_sesion', async (req, res) =>{
     res.redirect('/');
 });
 
+router.post('/validar_registro', async (req, res) => {
+    console.log('Validar registro');
+
+    var datosFormulario = req.body;
+
+    
+
+});
+
 router.get('/registrarse', async (req, res) =>{
     res.render('registrarse_formulario');
 });
