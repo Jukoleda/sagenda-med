@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 const Sistema = require('../model/sistema');
-const usuario = require('../model/usuario');
 const Usuarios = require('../model/usuario');
 
 router.get('/', async (req, res) => {
@@ -34,7 +33,10 @@ router.post('/validar_registro', async (req, res) => {
 
     var datosFormulario = req.body;
 
+    const usuario = new Usuarios(datosFormulario);
     
+    await usuario.save();
+    res.redirect('/iniciar_sesion');
 
 });
 

@@ -3,10 +3,10 @@ const router = express.Router();
 const Contactos = require('../model/contacto');
 
 router.post('/insertar_contacto', async (req, res) => {
-    console.log('Insertar contacto');
     const datosFormulario = req.body;
-   /* const contactos = new Contactos(req.body);
-    await contactos.save();*/
+    console.log(`Datos a insertar ${datosFormulario}`);
+    const contactos = new Contactos(datosFormulario);
+    //await contactos.save();
     res.redirect('/listar_contactos');
 });
 
@@ -19,5 +19,22 @@ router.get('/listar_contactos', async (req, res) => {
     res.render('listar_contactos', {contactos});
 });
 
+router.get('/modificar_contacto_formulario/:numero', (req, res) => {
+    const { numero } = req.params;
+    const contacto = await Contactos.find({numero: numero});
+    res.render('modificar_contacto_formulario', contacto);
+});
 
+router.put('/modificar_contacto', async (req, res) => {
+    const datosFormulario = req.body;
+    await Contactos.updateOne({})
+    res.redirect('/listar_contactos');
+});
+
+router.post('/eliminar_contacto', async (req, res) => {
+    const numero = req.body.numero;
+    await Contactos.remove({numero: numero});
+    res.redirect('/listar_contactos');
+});
+ 
 module.exports = router;

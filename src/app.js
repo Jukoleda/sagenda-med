@@ -19,8 +19,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 const indexRoutes = require('./routes/index');
+const contactosRoutes = require('./routes/contactos');
 
 app.use('/', indexRoutes);
+app.use('/', contactosRoutes);
 
 
 app.listen(app.get('port'), () => {
