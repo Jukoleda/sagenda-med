@@ -6,7 +6,7 @@ router.post('/insertar_contacto', async (req, res) => {
     const datosFormulario = req.body;
     console.log(`Datos a insertar ${datosFormulario}`);
     const contactos = new Contactos(datosFormulario);
-    //await contactos.save();
+    await contactos.save();
     res.redirect('/listar_contactos');
 });
 
@@ -16,10 +16,11 @@ router.get('/insertar_contacto_formulario', (req, res) => {
 
 router.get('/listar_contactos', async (req, res) => {
     const contactos = await Contactos.find();
+    console.log('listar_contactos');
     res.render('listar_contactos', {contactos});
 });
 
-router.get('/modificar_contacto_formulario/:numero', (req, res) => {
+router.get('/modificar_contacto_formulario/:numero', async (req, res) => {
     const { numero } = req.params;
     const contacto = await Contactos.find({numero: numero});
     res.render('modificar_contacto_formulario', contacto);

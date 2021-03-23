@@ -4,8 +4,11 @@ const router = express.Router();
 const Sistema = require('../model/sistema');
 const Usuarios = require('../model/usuario');
 
-router.get('/', async (req, res) => {
-    console.log('Iniciar sesion');
+router.get('/', (req, res) => {
+    res.redirect('/iniciar_sesion');
+});
+
+router.get('/iniciar_sesion', (req, res) => {
     res.render('iniciar_sesion');
 });
 
@@ -25,18 +28,26 @@ router.post('/validar_sesion', async (req, res) =>{
 
 
     console.log(req.body);
-    res.redirect('/');
+    res.redirect('/listar_contactos');
 });
 
 router.post('/validar_registro', async (req, res) => {
     console.log('Validar registro');
 
     var datosFormulario = req.body;
+    if(datosFormulario.pass == datosFormulario.pass2){
 
-    const usuario = new Usuarios(datosFormulario);
-    
-    await usuario.save();
-    res.redirect('/iniciar_sesion');
+        var nuevoUsuario = {
+            nombre: datosFormulario.name
+            ,usuario: datosFormulario.user
+            ,clave: datosFormulario.pass
+        };
+
+        const usuario = new Usuarios(nuevoUsuario);
+        
+        await usuario.save();
+        res.redirect('/iniciar_sesion');
+    }
 
 });
 
