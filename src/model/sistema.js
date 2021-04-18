@@ -7,4 +7,4 @@ const SistemaSchema = Schema({
     fechaHora: Date
 });
 
-module.exports = mongoose.model('contactos', SistemaSchema);
+module.exports = mongoose.model('sistema', SistemaSchema);

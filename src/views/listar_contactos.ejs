@@ -7,18 +7,22 @@
             No tienes contactos registrados, prueba registrar uno ahora.
         </div>
     <% } %>
-
+    <div class="row s6">
+        
+        <a class="btn waves-effect waves-light" href="/insertar_contacto_formulario">Nuevo contacto</a>
+        
+    </div>
     <% for(var i=0; i < contactos.length; i++) { %>
         <div class="row">
             <div class="col s12 m5">
                 <div class="card-panel">
                     <ul class="collection center-align">
-                        <li class="collection-item"> Nombre: <%= contactos[i].nombre%></li>
-                        <li class="collection-item">Detalle: <%= contactos[i].detalle%></li>
-                        <li class="collection-item">Numero: <%= contactos[i].numero%></li>
+                        <li class="collection-item"> Nombre: <%= contactos[i].nombre %></li>
+                        <li class="collection-item">Detalle: <%= contactos[i].detalle %></li>
+                        <li class="collection-item">Numero: <%= contactos[i].numero %></li>
                         <li class="collection-item ">   
-                            <button class="btn waves-effect waves-light modificarContacto" data-id="<%= contactos[i].numero%>">Editar</button>
-                            <button class="btn waves-effect waves-light elimarContacto" data-id="<%= contactos[i].numero%>">Eliminar</button>
+                            <button class="btn waves-effect waves-light modificarContacto" data-id="<%= contactos[i]._id %>">Editar</button>
+                            <button class="btn waves-effect waves-light eliminarContacto" data-id="<%= contactos[i]._id %>">Eliminar</button>
                        </li>
                       </ul>
                 </div>
@@ -28,7 +32,6 @@
         </div>
 
     <% } %>
-    <a class="btn waves-effect waves-light" href="/insertar_contacto_formulario">Nuevo contacto</a>
 </div>
 
 <%- include('partials/_footer') %>
