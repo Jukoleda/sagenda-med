@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const SistemaSchema = Schema({
     idUsuario: String,
-    activo: String,
+    activo: Boolean,
     fechaHora: Date
 });
 
