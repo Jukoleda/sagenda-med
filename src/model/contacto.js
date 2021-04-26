@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ContactoSchema = Schema({
+    idUsuario: String,
     nombre: String,
     detalle: String,
     numero: String,
