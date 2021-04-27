@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const Usuarios = require('../model/usuario');
 const Sistema = require('../model/sistema');
+const { validate } = require('../model/sistema');
 
 
 
@@ -28,7 +29,7 @@ router.get('/', isAuth, async (req, res) => {
 
 router.get('/iniciar_sesion', (req, res) => {
     let error = {message: ''};
-    res.render('iniciar_sesion', {error});
+    res.render('iniciar_sesion', {error: error});
 });
 
 router.post('/validar_sesion', async (req, res) =>{
@@ -47,6 +48,18 @@ router.post('/validar_sesion', async (req, res) =>{
         status : false,
         message : ''
     };
+
+    if(!datosFormulario.user) {
+        validateError.status = true;
+        validateError.message = "Debe ingresar un usuario";
+        return res.render('iniciar_sesion', {error: validateError});
+    }
+
+    if(!datosFormulario.pass) {
+        validateError.status = true;
+        validateError.message = "Debe ingresar una contraseña";
+        return res.render('iniciar_sesion', {error: validateError});
+    }
 
     if(!usuario) {
         validateError.status = true;
@@ -95,28 +108,41 @@ router.post('/validar_registro', async (req, res) => {
     if(!datosFormulario.name){
         validateError.message = "Debe ingresar un nombre.";
         validateError.status = true;
+        return res.render('registrarse_formulario', {error: validateError});
     }
     if(!datosFormulario.user){
         validateError.message = "Debe ingresar un nombre de ususario.";
         validateError.status = true;
+        return res.render('registrarse_formulario', {error: validateError});
     }
     if(!datosFormulario.pass){
         validateError.message = "Debe ingresar una contraseña.";
         validateError.status = true;
+        return res.render('registrarse_formulario', {error: validateError});
     }
     if(!datosFormulario.pass2){
         validateError.message = "Debe repetir la contraseña.";
         validateError.status = true;
+        return res.render('registrarse_formulario', {error: validateError});
     }
 
     if(datosFormulario.pass != datosFormulario.pass2){
         validateError.message = "Las contraseñas ingresadas deben coincidir.";
         validateError.status = true;
-    }
-
-    if(validateError.status){
         return res.render('registrarse_formulario', {error: validateError});
     }
+
+
+    let registrado = await Usuarios.findOne({usuario: datosFormulario.user});
+
+    if(registrado){
+
+        validateError.message = "El nombre de usuario ya existe, por favor ingrese uno diferente.";
+        validateError.status = true;
+        return res.render('registrarse_formulario', {error: validateError});
+    }
+
+
 
 
     let hashPass = await bcrypt.hash(datosFormulario.pass, 12);
@@ -141,7 +167,7 @@ router.get('/registrarse', async (req, res) =>{
         message: ''
     };
 
-    res.render('registrarse_formulario', {error : validateError});
+    res.render('registrarse_formulario', {error : validateError, sesionActiva: false});
 });
 
 router.get('/cerrar_sesion', async (req, res) => {

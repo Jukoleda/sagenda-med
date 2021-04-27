@@ -20,9 +20,44 @@ router.post('/insertar_contacto', isAuth, async (req, res) => {
     let sesion = await Sistema.findOne({idSesion: req.session.id});
 
     if(sesion){
+
+
+
+        
         let idUsuario = sesion.idUsuario;
 
         const datosFormulario = req.body;
+
+        let validateError = {
+            status: false,
+            message: ''
+        };
+        
+        if(!datosFormulario.name){
+            validateError.message = "Debe ingresar un nombre.";
+            validateError.status = true;
+            return res.render('insertar_contacto_formulario', {error: validateError, sesionActiva: req.session.isAuth});
+        }
+        if(!datosFormulario.detail){
+            validateError.message = "Debe ingresar un detalle.";
+            validateError.status = true;
+            return res.render('insertar_contacto_formulario', {error: validateError, sesionActiva: req.session.isAuth});
+        }
+        if(!datosFormulario.number){
+            validateError.message = "Debe ingresar un número de teléfono.";
+            validateError.status = true;
+            return res.render('insertar_contacto_formulario', {error: validateError, sesionActiva: req.session.isAuth});
+        }       
+    
+        let registrado = await Contactos.findOne({ $and :[{idUsuario: idUsuario},{numero: datosFormulario.number}]});
+    
+        if(registrado){
+    
+            validateError.message = "El numero ingresado ya esta registrado, por favor ingrese uno diferente.";
+            validateError.status = true;
+            return res.render('insertar_contacto_formulario', {error: validateError, sesionActiva: req.session.isAuth});
+        }
+    
         var insertar = {
             idUsuario: idUsuario
             ,nombre: datosFormulario.name
@@ -39,8 +74,23 @@ router.post('/insertar_contacto', isAuth, async (req, res) => {
 
 });
 
-router.get('/insertar_contacto_formulario', isAuth, (req, res) => {
-    res.render('insertar_contacto_formulario');
+router.get('/insertar_contacto_formulario', isAuth, async (req, res) => {
+
+    let sesion = await Sistema.findOne({idSesion: req.session.id});
+
+    if(sesion){
+
+        let validateError = {
+            status: false,
+            message: ''
+        };
+    
+        return res.render('insertar_contacto_formulario', {error: validateError, sesionActiva: req.session.isAuth});
+    }
+
+
+    return res.redirect('/');
+   
 });
 
 router.get('/listar_contactos', isAuth, async (req, res) => {
@@ -51,7 +101,7 @@ router.get('/listar_contactos', isAuth, async (req, res) => {
 
         let contactos = await Contactos.find({idUsuario: sesion.idUsuario});
 
-        return res.render('listar_contactos', {contactos});
+        return res.render('listar_contactos', {contactos: contactos, sesionActiva: req.session.isAuth});
     }
 
 
@@ -60,7 +110,7 @@ router.get('/listar_contactos', isAuth, async (req, res) => {
    
 });
 
-router.post('/modificar_contacto_formulario/', isAuth, async (req, res) => {n
+router.post('/modificar_contacto_formulario/', isAuth, async (req, res) => {
     //res.send(req.body.numero);
 
     let sesion = await Sistema.findOne({idSesion: req.session.id});
@@ -68,14 +118,14 @@ router.post('/modificar_contacto_formulario/', isAuth, async (req, res) => {n
     if(sesion){
         const datosContacto = req.body;
         const contacto = await Contactos.findOne({_id: datosContacto.id});
-        res.render('modificar_contacto_formulario', {contacto});
+        return res.render('modificar_contacto_formulario', {contacto: contacto, sesionActiva: req.session.isAuth});
     }
     return res.redirect('/');
 
 });
 
 router.post('/modificar_contacto', isAuth, async (req, res) => {
-    let sesion = await Sesion.findOne({idSesion: req.session.id});
+    let sesion = await Sistema.findOne({idSesion: req.session.id});
 
     if(sesion){
 
@@ -95,7 +145,7 @@ router.post('/modificar_contacto', isAuth, async (req, res) => {
 });
 
 router.post('/eliminar_contacto/', isAuth, async (req, res) => {
-    let sesion = await Sesion.findOne({idSesion: req.session.id});
+    let sesion = await Sistema.findOne({idSesion: req.session.id});
 
     if(sesion){
         const { id }  = req.body;

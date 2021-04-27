@@ -1,37 +1,40 @@
-<%- include('partials/_header') %>
+<%- include('partials/_header', {sesion_activa: sesionActiva}) %>
 
 <div class="container">
-    <% if(contactos.length==0) {%>
-        <div class="row">
-
-            No tienes contactos registrados, prueba registrar uno ahora.
+    <div class="row">
+        <div class="col s2">
+            <a class="btn waves-effect waves-light" href="/insertar_contacto_formulario">Nuevo contacto</a>
         </div>
-    <% } %>
-    <div class="row s6">
+        <div class="col s10">
+
+            <% if(contactos.length==0) {%>
+                <div class="row">
         
-        <a class="btn waves-effect waves-light" href="/insertar_contacto_formulario">Nuevo contacto</a>
-        
-    </div>
-    <% for(var i=0; i < contactos.length; i++) { %>
-        <div class="row">
-            <div class="col s12 m5">
-                <div class="card-panel">
-                    <ul class="collection center-align">
-                        <li class="collection-item"> Nombre: <%= contactos[i].nombre %></li>
-                        <li class="collection-item">Detalle: <%= contactos[i].detalle %></li>
-                        <li class="collection-item">Numero: <%= contactos[i].numero %></li>
-                        <li class="collection-item ">   
-                            <button class="btn waves-effect waves-light modificarContacto" data-id="<%= contactos[i]._id %>">Editar</button>
-                            <button class="btn waves-effect waves-light eliminarContacto" data-id="<%= contactos[i]._id %>">Eliminar</button>
-                       </li>
-                      </ul>
+                    No tienes contactos registrados, prueba registrar uno ahora.
                 </div>
-            </div>
-           
-           
-        </div>
+            <% } %>
 
-    <% } %>
+            <% for(var i=0; i < contactos.length; i++) { %>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card-panel">
+                            <ul class="collection center-align">
+                                <li class="collection-item"> Nombre: <%= contactos[i].nombre %></li>
+                                <li class="collection-item">Detalle: <%= contactos[i].detalle %></li>
+                                <li class="collection-item">Numero: <%= contactos[i].numero %></li>
+                                <li class="collection-item ">   
+                                    <button class="btn waves-effect waves-light modificarContacto" data-id="<%= contactos[i]._id %>">Editar</button>
+                                    <button class="btn waves-effect waves-light eliminarContacto" data-id="<%= contactos[i]._id %>">Eliminar</button>
+                               </li>
+                              </ul>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
 </div>
+
+
 
 <%- include('partials/_footer') %>

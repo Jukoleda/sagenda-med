@@ -14,14 +14,30 @@
 
      
     <title>Super Agenda</title>
+    <style>
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+
+    </style>
 </head>
 <body>
-    <nav>
+    <nav class="teal darken-1">
         <div class="nav-wapper">
-            <div class="brand-logo">Super-Agenda</div>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/cerrar_sesion">Cerrar sesion</a></li>
-              </ul>
+            <a href="/" class="brand-logo center">Super-Agenda</a>
+            <% if(sesion_activa) { %>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="/cerrar_sesion">Cerrar sesion</a></li>
+                </ul>
+            <% } %>
         </div>
     </nav>
+<main>
     
